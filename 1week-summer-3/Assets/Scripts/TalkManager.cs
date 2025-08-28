@@ -297,13 +297,30 @@ public class TalkManager : MonoBehaviour
     private void ExecuteSimpleCommand(string command, string argument)
     {
         Debug.Log($"コマンド実行: {command}, 引数: {argument}");
+
+        // AudioManagerがシーンに存在するかチェック
+        if (AudioManager.Instance == null)
+        {
+            Debug.LogError("AudioManagerが見つかりません！");
+            return;
+        }
+
         switch (command)
         {
             case "SHOW_PORTRAIT":
                 // TODO: 立ち絵表示の処理
                 break;
+
             case "PLAY_BGM":
-                // TODO: BGM再生の処理
+                AudioManager.Instance.PlayBGM(argument);
+                break;
+
+            case "STOP_BGM":
+                AudioManager.Instance.StopBGM();
+                break;
+
+            case "PLAY_SE":
+                AudioManager.Instance.PlaySE(argument);
                 break;
         }
     }
