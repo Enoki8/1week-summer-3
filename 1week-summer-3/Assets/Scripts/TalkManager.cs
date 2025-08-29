@@ -156,9 +156,10 @@ public class TalkManager : MonoBehaviour
         _isTalking = true;
         textBoxObject.SetActive(true);
 
+        bool isFirstLine = true;
+
         while (_currentLineIndex < _scenarioLines.Count)
         {
-            // 選択待ちフラグが立っている間はコルーチンを一時停止
             yield return new WaitUntil(() => !_isWaitingForChoice);
 
             ScenarioLine currentLine = _scenarioLines[_currentLineIndex];
@@ -209,7 +210,8 @@ public class TalkManager : MonoBehaviour
                 characterNameTextUI.gameObject.SetActive(false);
             }
 
-            yield return StartCoroutine(TypeSentenceCoroutine(currentLine.Sentence));
+            yield return StartCoroutine(TypeSentenceCoroutine(currentLine.Sentence, isFirstLine));
+            isFirstLine = false;
 
             _currentLineIndex++;
         }
@@ -282,11 +284,12 @@ public class TalkManager : MonoBehaviour
         }
     }
 
-    private IEnumerator TypeSentenceCoroutine(string sentence)
+    private IEnumerator TypeSentenceCoroutine(string sentence, bool skipWait = false)
     {
         textUI.text = sentence;
         nextIconObject.SetActive(false);
-        yield return new WaitForSeconds(waitCanClick);
+        if (!skipWait)
+            yield return new WaitForSeconds(waitCanClick);
 
         nextIconObject.SetActive(true);
         yield return new WaitUntil(() => playerInput.actions["Click"].WasPressedThisFrame());

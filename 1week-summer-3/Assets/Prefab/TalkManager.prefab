@@ -53,7 +53,7 @@ MonoBehaviour:
   fadeImage: {fileID: 0}
   choiceButtonPrefab: {fileID: 4262367919209939692, guid: 1c1f7c028800df34cac62860582add60, type: 3}
   choiceContainer: {fileID: 0}
-  waitCanClick: 0.5
+  waitCanClick: 1
   fadeSpeed: 1
   scenarioFile: {fileID: 0}
 --- !u!114 &5665096175702401165

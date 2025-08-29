@@ -1840,6 +1840,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 81007640}
     - target: {fileID: 6069513018905978, guid: 226a97a7de53bf640b8f2190805f2eff, type: 3}
+      propertyPath: scenarioFile
+      value: 
+      objectReference: {fileID: 4900000, guid: 3f2ec23e3fa2abd47bc4d21a4ad1bbee, type: 3}
+    - target: {fileID: 6069513018905978, guid: 226a97a7de53bf640b8f2190805f2eff, type: 3}
       propertyPath: textBoxObject
       value: 
       objectReference: {fileID: 89432410}
