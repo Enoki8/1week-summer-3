@@ -4,11 +4,12 @@ using UnityEngine;
 public class TimeLimitManager : MonoBehaviour
 {
     public static TimeLimitManager Instance;
+    public bool isStart = false;
     [SerializeField] private float timeLimit = 60f;
 
-    [SerializeField] private TextMeshProUGUI rimitTime;
+    //[SerializeField] private TextMeshProUGUI rimitTime;
 
-    private int nowSwowingTimeNumber = 60;
+    public  int nowSwowingTimeNumber = 60;
 
     private void Awake()
     {
@@ -25,6 +26,7 @@ public class TimeLimitManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!isStart) return;
         if (nowSwowingTimeNumber == 0) return;
         DecreaseTime();
         ShowTimeRemain();
@@ -45,6 +47,5 @@ public class TimeLimitManager : MonoBehaviour
         Debug.Log(timeLimit);
 
         nowSwowingTimeNumber = (int)timeLimit;
-        rimitTime.text = "<mspace=100px>" + nowSwowingTimeNumber.ToString()+ "</mspace>";
     }
 }

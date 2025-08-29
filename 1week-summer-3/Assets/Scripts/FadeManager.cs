@@ -17,6 +17,7 @@ public class FadeManager : MonoBehaviour
 
     public void FadeToScene(string sceneName)
     {
+        UnityEngine.Debug.Log("ボタンがクリックされ、FadeToSceneが呼び出されました！"); // ← この行を追加
         StartCoroutine(FadeAndLoad(sceneName));
     }
 
