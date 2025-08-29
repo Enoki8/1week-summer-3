@@ -1,13 +1,13 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement; // ƒV[ƒ“ŠÇ—‚Ì‚½‚ß‚É’Ç‰Á
+using UnityEngine.SceneManagement; // ã‚·ãƒ¼ãƒ³ç®¡ç†ã®ãŸã‚ã«è¿½åŠ 
 
-// ƒVƒiƒŠƒI1s•ª‚Ìƒf[ƒ^‚ğŠi”[‚·‚éƒNƒ‰ƒX
+// ã‚·ãƒŠãƒªã‚ª1è¡Œåˆ†ã®ãƒ‡ãƒ¼ã‚¿ã‚’æ ¼ç´ã™ã‚‹ã‚¯ãƒ©ã‚¹
 [System.Serializable]
 public class ScenarioLine
 {
@@ -20,7 +20,7 @@ public class ScenarioLine
 
 public class TalkManager : MonoBehaviour
 {
-    [Header("UIƒp[ƒc")]
+    [Header("UIãƒ‘ãƒ¼ãƒ„")]
     [SerializeField] private TextMeshProUGUI textUI;
     [SerializeField] private TextMeshProUGUI characterNameTextUI;
     [SerializeField] private GameObject textBoxObject;
@@ -28,25 +28,25 @@ public class TalkManager : MonoBehaviour
     [SerializeField] private Image backgroundImage;
     [SerializeField] private Image fadeImage;
 
-    [Header("‘I‘ğˆƒp[ƒc")]
-    [SerializeField] private GameObject choiceButtonPrefab; // ‘I‘ğˆƒ{ƒ^ƒ“‚ÌƒvƒŒƒnƒu
-    [SerializeField] private Transform choiceContainer;      // ‘I‘ğˆƒ{ƒ^ƒ“‚ğ”z’u‚·‚éeƒIƒuƒWƒFƒNƒg
+    [Header("é¸æŠè‚¢ãƒ‘ãƒ¼ãƒ„")]
+    [SerializeField] private GameObject choiceButtonPrefab; // é¸æŠè‚¢ãƒœã‚¿ãƒ³ã®ãƒ—ãƒ¬ãƒãƒ–
+    [SerializeField] private Transform choiceContainer;      // é¸æŠè‚¢ãƒœã‚¿ãƒ³ã‚’é…ç½®ã™ã‚‹è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
-    [Header("ƒeƒLƒXƒgİ’è")]
+    [Header("ãƒ†ã‚­ã‚¹ãƒˆè¨­å®š")]
     [SerializeField] private float waitCanClick = 0.5f;
 
-    [Header("‰‰oİ’è")]
+    [Header("æ¼”å‡ºè¨­å®š")]
     [SerializeField] private float fadeSpeed = 1.0f;
 
-    [Header("ƒVƒiƒŠƒIƒtƒ@ƒCƒ‹")]
+    [Header("ã‚·ãƒŠãƒªã‚ªãƒ•ã‚¡ã‚¤ãƒ«")]
     [SerializeField] private TextAsset scenarioFile;
 
     private List<ScenarioLine> _scenarioLines;
     private int _currentLineIndex = 0;
 
-    // ƒ‰ƒxƒ‹–¼‚ÆsƒCƒ“ƒfƒbƒNƒX‚ğ•R•t‚¯‚é‚½‚ß‚Ì«‘
+    // ãƒ©ãƒ™ãƒ«åã¨è¡Œã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ç´ä»˜ã‘ã‚‹ãŸã‚ã®è¾æ›¸
     private Dictionary<string, int> _labelDictionary = new Dictionary<string, int>();
-    // ƒvƒŒƒCƒ„[‚ª‘I‘ğˆ‚ğ‘I‚Ô‚Ü‚ÅƒVƒiƒŠƒIis‚ğ‘Ò‹@‚³‚¹‚é‚½‚ß‚Ì•Ï”
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒé¸æŠè‚¢ã‚’é¸ã¶ã¾ã§ã‚·ãƒŠãƒªã‚ªé€²è¡Œã‚’å¾…æ©Ÿã•ã›ã‚‹ãŸã‚ã®å¤‰æ•°
     private bool _isWaitingForChoice = false;
 
     private bool _isTalking = false;
@@ -68,7 +68,7 @@ public class TalkManager : MonoBehaviour
         textBoxObject.SetActive(false);
         nextIconObject.SetActive(false);
         characterNameTextUI.gameObject.SetActive(false);
-        choiceContainer.gameObject.SetActive(false); // ‘I‘ğˆƒRƒ“ƒeƒi‚ğ”ñ•\¦‚É
+        choiceContainer.gameObject.SetActive(false); // é¸æŠè‚¢ã‚³ãƒ³ãƒ†ãƒŠã‚’éè¡¨ç¤ºã«
 
         if (fadeImage != null)
         {
@@ -96,17 +96,17 @@ public class TalkManager : MonoBehaviour
     private void LoadScenario(string csvText)
     {
         _scenarioLines.Clear();
-        _labelDictionary.Clear(); // ƒ‰ƒxƒ‹«‘‚ğƒNƒŠƒA
+        _labelDictionary.Clear(); // ãƒ©ãƒ™ãƒ«è¾æ›¸ã‚’ã‚¯ãƒªã‚¢
 
         var lines = csvText.Split('\n').Where(line => !string.IsNullOrWhiteSpace(line)).ToList();
 
-        // ƒwƒbƒ_[s‚ğƒXƒLƒbƒv
+        // ãƒ˜ãƒƒãƒ€ãƒ¼è¡Œã‚’ã‚¹ã‚­ãƒƒãƒ—
         if (lines.Count > 0)
         {
             lines.RemoveAt(0);
         }
 
-        // ‚Ü‚¸A‘S‚Ä‚ÌLABELƒRƒ}ƒ“ƒh‚ğƒXƒLƒƒƒ“‚µ‚Ä«‘‚É“o˜^‚·‚é
+        // ã¾ãšã€å…¨ã¦ã®LABELã‚³ãƒãƒ³ãƒ‰ã‚’ã‚¹ã‚­ãƒ£ãƒ³ã—ã¦è¾æ›¸ã«ç™»éŒ²ã™ã‚‹
         for (int i = 0; i < lines.Count; i++)
         {
             var values = lines[i].Trim().Split(',');
@@ -114,31 +114,31 @@ public class TalkManager : MonoBehaviour
             {
                 if (values[1].StartsWith("LABEL:"))
                 {
-                    // "LABEL:" ‚Ì•”•ª‚ğíœ‚µ‚Äƒ‰ƒxƒ‹–¼‚¾‚¯‚ğæ“¾
+                    // "LABEL:" ã®éƒ¨åˆ†ã‚’å‰Šé™¤ã—ã¦ãƒ©ãƒ™ãƒ«åã ã‘ã‚’å–å¾—
                     string label = values[1].Substring("LABEL:".Length);
                     _labelDictionary[label] = i;
                 }
             }
         }
 
-        // ƒVƒiƒŠƒIƒf[ƒ^‚ğƒŠƒXƒg‚ÉŠi”[
+        // ã‚·ãƒŠãƒªã‚ªãƒ‡ãƒ¼ã‚¿ã‚’ãƒªã‚¹ãƒˆã«æ ¼ç´
         foreach (var line in lines)
         {
             var values = line.Trim().Split(',');
             var data = new ScenarioLine();
 
-            // Command—ñ‚ªCHOICE‚Ån‚Ü‚éê‡A“Á•Êˆ—‚ğs‚¤
+            // Commandåˆ—ãŒCHOICEã§å§‹ã¾ã‚‹å ´åˆã€ç‰¹åˆ¥å‡¦ç†ã‚’è¡Œã†
             if (values.Length > 1 && values[1].StartsWith("CHOICE:"))
             {
-                // 2—ñ–ÚˆÈ~‚Ì—v‘f‚ğ‘S‚ÄƒJƒ“ƒ}‚Å˜AŒ‹‚µA‚P‚Â‚ÌƒRƒ}ƒ“ƒh‚Æ‚µ‚ÄÄ\’z‚·‚é
+                // 2åˆ—ç›®ä»¥é™ã®è¦ç´ ã‚’å…¨ã¦ã‚«ãƒ³ãƒã§é€£çµã—ã€ï¼‘ã¤ã®ã‚³ãƒãƒ³ãƒ‰ã¨ã—ã¦å†æ§‹ç¯‰ã™ã‚‹
                 string combinedCommand = string.Join(",", values.Skip(1));
 
                 data.ID = values[0];
                 data.Command = combinedCommand;
-                data.CharacterName = ""; // CHOICEs‚ÍƒLƒƒƒ‰–¼‚ÆƒZƒŠƒt‚Í‹ó
+                data.CharacterName = ""; // CHOICEè¡Œã¯ã‚­ãƒ£ãƒ©åã¨ã‚»ãƒªãƒ•ã¯ç©º
                 data.Sentence = "";
             }
-            else // ‚»‚êˆÈŠO‚Ìs‚ÍA‚±‚ê‚Ü‚Å’Ê‚è‚Ìˆ—
+            else // ãã‚Œä»¥å¤–ã®è¡Œã¯ã€ã“ã‚Œã¾ã§é€šã‚Šã®å‡¦ç†
             {
                 if (values.Length < 4) continue;
                 data.ID = values[0];
@@ -158,12 +158,12 @@ public class TalkManager : MonoBehaviour
 
         while (_currentLineIndex < _scenarioLines.Count)
         {
-            // ‘I‘ğ‘Ò‚¿ƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚éŠÔ‚ÍƒRƒ‹[ƒ`ƒ“‚ğˆê’â~
+            // é¸æŠå¾…ã¡ãƒ•ãƒ©ã‚°ãŒç«‹ã£ã¦ã„ã‚‹é–“ã¯ã‚³ãƒ«ãƒ¼ãƒãƒ³ã‚’ä¸€æ™‚åœæ­¢
             yield return new WaitUntil(() => !_isWaitingForChoice);
 
             ScenarioLine currentLine = _scenarioLines[_currentLineIndex];
 
-            // --- ƒRƒ}ƒ“ƒh‚ÌÀs ---
+            // --- ã‚³ãƒãƒ³ãƒ‰ã®å®Ÿè¡Œ ---
             if (!string.IsNullOrEmpty(currentLine.Command))
             {
                 string[] parts = currentLine.Command.Split(':');
@@ -180,14 +180,14 @@ public class TalkManager : MonoBehaviour
                         break;
                     case "JUMP":
                         JumpToLabel(arguments[0]);
-                        _currentLineIndex++; // JumpŒã‚ÍŸ‚Ìs‚ğˆ—‚µ‚È‚¢‚æ‚¤‚ÉƒCƒ“ƒNƒŠƒƒ“ƒg‚µ‚Ä‚¨‚­
-                        continue; // ‘¦À‚ÉŸ‚Ìƒ‹[ƒv‚Ö
+                        _currentLineIndex++; // Jumpå¾Œã¯æ¬¡ã®è¡Œã‚’å‡¦ç†ã—ãªã„ã‚ˆã†ã«ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆã—ã¦ãŠã
+                        continue; // å³åº§ã«æ¬¡ã®ãƒ«ãƒ¼ãƒ—ã¸
                     case "LABEL":
-                        // LABEL‚ÍLoad‚Éˆ—Ï‚İ‚È‚Ì‚Å‰½‚à‚µ‚È‚¢
+                        // LABELã¯Loadæ™‚ã«å‡¦ç†æ¸ˆã¿ãªã®ã§ä½•ã‚‚ã—ãªã„
                         break;
                     case "LOAD_SCENE":
                         yield return StartCoroutine(LoadSceneFade(arguments[0]));
-                        // ƒV[ƒ“‘JˆÚŒã‚Í‚±‚ÌTalkManager‚Í•s—v‚É‚È‚é‚Ì‚ÅAƒRƒ‹[ƒ`ƒ“‚ğI—¹
+                        // ã‚·ãƒ¼ãƒ³é·ç§»å¾Œã¯ã“ã®TalkManagerã¯ä¸è¦ã«ãªã‚‹ã®ã§ã€ã‚³ãƒ«ãƒ¼ãƒãƒ³ã‚’çµ‚äº†
                         yield break;
                     default:
                         ExecuteSimpleCommand(commandName, arguments.Length > 0 ? arguments[0] : "");
@@ -198,7 +198,7 @@ public class TalkManager : MonoBehaviour
                 continue;
             }
 
-            // --- ƒeƒLƒXƒg‚Æ–¼‘O‚Ì•\¦ ---
+            // --- ãƒ†ã‚­ã‚¹ãƒˆã¨åå‰ã®è¡¨ç¤º ---
             if (!string.IsNullOrEmpty(currentLine.CharacterName))
             {
                 characterNameTextUI.gameObject.SetActive(true);
@@ -217,14 +217,14 @@ public class TalkManager : MonoBehaviour
         EndTalk();
     }
 
-    // ‘I‘ğˆƒRƒ}ƒ“ƒh‚ğˆ—
+    // é¸æŠè‚¢ã‚³ãƒãƒ³ãƒ‰ã‚’å‡¦ç†
     private void HandleChoiceCommand(string[] arguments)
     {
-        // ˆø”‚Ì”‚ªŠï”‚Ìê‡‚ÍAƒyƒA‚ª¬—§‚µ‚È‚¢‚Ì‚ÅƒGƒ‰[
+        // å¼•æ•°ã®æ•°ãŒå¥‡æ•°ã®å ´åˆã¯ã€ãƒšã‚¢ãŒæˆç«‹ã—ãªã„ã®ã§ã‚¨ãƒ©ãƒ¼
         if (arguments.Length == 0 || arguments.Length % 2 != 0)
         {
-            Debug.LogError($"CHOICEƒRƒ}ƒ“ƒh‚Ìˆø”‚ª•s³‚Å‚·BƒeƒLƒXƒg‚Æƒ‰ƒxƒ‹‚ªƒyƒA‚É‚È‚Á‚Ä‚¢‚È‚¢‚©Aˆø”‚ª‹ó‚Å‚·BCSV‚ğŠm”F‚µ‚Ä‚­‚¾‚³‚¢B ˆø”: {string.Join(",", arguments)}");
-            // ‘Ò‹@ó‘Ô‚É‚È‚ç‚¸‚ÉŸ‚Ìs‚Öi‚Ş‚æ‚¤‚É‚·‚é
+            Debug.LogError($"CHOICEã‚³ãƒãƒ³ãƒ‰ã®å¼•æ•°ãŒä¸æ­£ã§ã™ã€‚ãƒ†ã‚­ã‚¹ãƒˆã¨ãƒ©ãƒ™ãƒ«ãŒãƒšã‚¢ã«ãªã£ã¦ã„ãªã„ã‹ã€å¼•æ•°ãŒç©ºã§ã™ã€‚CSVã‚’ç¢ºèªã—ã¦ãã ã•ã„ã€‚ å¼•æ•°: {string.Join(",", arguments)}");
+            // å¾…æ©ŸçŠ¶æ…‹ã«ãªã‚‰ãšã«æ¬¡ã®è¡Œã¸é€²ã‚€ã‚ˆã†ã«ã™ã‚‹
             _isWaitingForChoice = false;
             return;
         }
@@ -232,13 +232,13 @@ public class TalkManager : MonoBehaviour
         _isWaitingForChoice = true;
         choiceContainer.gameObject.SetActive(true);
 
-        // ŒÃ‚¢‘I‘ğˆ‚ªc‚Á‚Ä‚¢‚ê‚Îíœ
+        // å¤ã„é¸æŠè‚¢ãŒæ®‹ã£ã¦ã„ã‚Œã°å‰Šé™¤
         foreach (Transform child in choiceContainer)
         {
             Destroy(child.gameObject);
         }
 
-        // CSV‚©‚ç“Ç‚İæ‚Á‚½î•ñ‚Å‘I‘ğˆ‚ğ¶¬
+        // CSVã‹ã‚‰èª­ã¿å–ã£ãŸæƒ…å ±ã§é¸æŠè‚¢ã‚’ç”Ÿæˆ
         for (int i = 0; i < arguments.Length; i += 2)
         {
             string choiceText = arguments[i];
@@ -250,22 +250,22 @@ public class TalkManager : MonoBehaviour
         }
     }
 
-    // ‘I‘ğˆƒ{ƒ^ƒ“‚ªƒNƒŠƒbƒN‚³‚ê‚½‚Æ‚«‚ÉŒÄ‚Ño‚³‚ê‚é
+    // é¸æŠè‚¢ãƒœã‚¿ãƒ³ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã¨ãã«å‘¼ã³å‡ºã•ã‚Œã‚‹
     public void OnChoiceSelected(string targetLabel)
     {
-        // ‘I‘ğˆ‚ğ‘S‚Äíœ
+        // é¸æŠè‚¢ã‚’å…¨ã¦å‰Šé™¤
         foreach (Transform child in choiceContainer)
         {
             Destroy(child.gameObject);
         }
 
         choiceContainer.gameObject.SetActive(false);
-        textBoxObject.SetActive(true); // ‰ï˜bƒEƒBƒ“ƒhƒE‚ğÄ•\¦
+        textBoxObject.SetActive(true); // ä¼šè©±ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’å†è¡¨ç¤º
 
-        // ƒVƒiƒŠƒI‚ğw’è‚Ìƒ‰ƒxƒ‹‚ÉƒWƒƒƒ“ƒv‚³‚¹‚é
+        // ã‚·ãƒŠãƒªã‚ªã‚’æŒ‡å®šã®ãƒ©ãƒ™ãƒ«ã«ã‚¸ãƒ£ãƒ³ãƒ—ã•ã›ã‚‹
         JumpToLabel(targetLabel);
 
-        _isWaitingForChoice = false; // ‘Ò‹@ó‘Ô‚ğ‰ğœ
+        _isWaitingForChoice = false; // å¾…æ©ŸçŠ¶æ…‹ã‚’è§£é™¤
     }
 
 
@@ -278,7 +278,7 @@ public class TalkManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"w’è‚³‚ê‚½ƒ‰ƒxƒ‹‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ: {label}");
+            Debug.LogError($"æŒ‡å®šã•ã‚ŒãŸãƒ©ãƒ™ãƒ«ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“: {label}");
         }
     }
 
@@ -293,22 +293,22 @@ public class TalkManager : MonoBehaviour
         nextIconObject.SetActive(false);
     }
 
-    // ‘Ò‹@‚ª•s—v‚ÈƒRƒ}ƒ“ƒh‚ğÀs‚·‚é
+    // å¾…æ©ŸãŒä¸è¦ãªã‚³ãƒãƒ³ãƒ‰ã‚’å®Ÿè¡Œã™ã‚‹
     private void ExecuteSimpleCommand(string command, string argument)
     {
-        Debug.Log($"ƒRƒ}ƒ“ƒhÀs: {command}, ˆø”: {argument}");
+        Debug.Log($"ã‚³ãƒãƒ³ãƒ‰å®Ÿè¡Œ: {command}, å¼•æ•°: {argument}");
 
-        // AudioManager‚ªƒV[ƒ“‚É‘¶İ‚·‚é‚©ƒ`ƒFƒbƒN
+        // AudioManagerãŒã‚·ãƒ¼ãƒ³ã«å­˜åœ¨ã™ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
         if (AudioManager.Instance == null)
         {
-            Debug.LogError("AudioManager‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñI");
+            Debug.LogError("AudioManagerãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ï¼");
             return;
         }
 
         switch (command)
         {
             case "SHOW_PORTRAIT":
-                // TODO: —§‚¿ŠG•\¦‚Ìˆ—
+                // TODO: ç«‹ã¡çµµè¡¨ç¤ºã®å‡¦ç†
                 break;
 
             case "PLAY_BGM":
@@ -325,13 +325,13 @@ public class TalkManager : MonoBehaviour
         }
     }
 
-    // ƒtƒF[ƒh•t‚«‚Å”wŒi‚ğ•ÏX‚·‚éƒRƒ‹[ƒ`ƒ“
+    // ãƒ•ã‚§ãƒ¼ãƒ‰ä»˜ãã§èƒŒæ™¯ã‚’å¤‰æ›´ã™ã‚‹ã‚³ãƒ«ãƒ¼ãƒãƒ³
     private IEnumerator ChangeBackgroundFade(string backgroundName)
     {
-        // ƒtƒF[ƒhƒAƒEƒg
+        // ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆ
         yield return StartCoroutine(Fade(1.0f));
 
-        // ”wŒi‰æ‘œ‚ğ·‚µ‘Ö‚¦
+        // èƒŒæ™¯ç”»åƒã‚’å·®ã—æ›¿ãˆ
         if (backgroundImage != null)
         {
             Sprite newBackground = Resources.Load<Sprite>($"Backgrounds/{backgroundName}");
@@ -341,40 +341,40 @@ public class TalkManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"”wŒi‰æ‘œ‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½: Resources/Backgrounds/{backgroundName}");
+                Debug.LogError($"èƒŒæ™¯ç”»åƒã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸ: Resources/Backgrounds/{backgroundName}");
             }
         }
 
-        // ƒtƒF[ƒhƒCƒ“
+        // ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³
         yield return StartCoroutine(Fade(0.0f));
     }
 
     /// <summary>
-    /// ƒtƒF[ƒh•t‚«‚Åw’è‚³‚ê‚½ƒV[ƒ“‚ğƒ[ƒh‚·‚éƒRƒ‹[ƒ`ƒ“
+    /// ãƒ•ã‚§ãƒ¼ãƒ‰ä»˜ãã§æŒ‡å®šã•ã‚ŒãŸã‚·ãƒ¼ãƒ³ã‚’ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ã‚³ãƒ«ãƒ¼ãƒãƒ³
     /// </summary>
-    /// <param name="sceneName">ƒ[ƒh‚·‚éƒV[ƒ“–¼</param>
+    /// <param name="sceneName">ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ã‚·ãƒ¼ãƒ³å</param>
     private IEnumerator LoadSceneFade(string sceneName)
     {
-        // ‚Ü‚¸‰æ–Ê‚ğƒtƒF[ƒhƒAƒEƒg‚³‚¹‚é
+        // ã¾ãšç”»é¢ã‚’ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆã•ã›ã‚‹
         yield return StartCoroutine(Fade(1.0f));
 
-        // ”ñ“¯Šú‚ÅƒV[ƒ“‚ğƒ[ƒh‚·‚é
+        // éåŒæœŸã§ã‚·ãƒ¼ãƒ³ã‚’ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
         //AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
         FadeManager.Instance.FadeToScene(sceneName);
 
-        //// ƒ[ƒh‚ªŠ®—¹‚·‚é‚Ü‚Å‘Ò‹@‚·‚é
+        //// ãƒ­ãƒ¼ãƒ‰ãŒå®Œäº†ã™ã‚‹ã¾ã§å¾…æ©Ÿã™ã‚‹
         //while (!asyncLoad.isDone)
         //{
         //    yield return null;
         //}
     }
 
-    // ƒtƒF[ƒhˆ—‚Ì–{‘Ì
+    // ãƒ•ã‚§ãƒ¼ãƒ‰å‡¦ç†ã®æœ¬ä½“
     private IEnumerator Fade(float targetAlpha)
     {
         if (fadeImage == null)
         {
-            Debug.LogWarning("ƒtƒF[ƒh—p‚ÌImage‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB");
+            Debug.LogWarning("ãƒ•ã‚§ãƒ¼ãƒ‰ç”¨ã®ImageãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚");
             yield break;
         }
 
@@ -387,10 +387,10 @@ public class TalkManager : MonoBehaviour
             timer += Time.deltaTime * fadeSpeed;
             float newAlpha = Mathf.Lerp(startAlpha, targetAlpha, timer);
             fadeImage.color = new Color(currentColor.r, currentColor.g, currentColor.b, newAlpha);
-            yield return null; // 1ƒtƒŒ[ƒ€‘Ò‚Â
+            yield return null; // 1ãƒ•ãƒ¬ãƒ¼ãƒ å¾…ã¤
         }
 
-        // ŠmÀ‚É–Ú•W‚ÌƒAƒ‹ƒtƒ@’l‚É‚·‚é
+        // ç¢ºå®Ÿã«ç›®æ¨™ã®ã‚¢ãƒ«ãƒ•ã‚¡å€¤ã«ã™ã‚‹
         fadeImage.color = new Color(currentColor.r, currentColor.g, currentColor.b, targetAlpha);
     }
 
@@ -406,6 +406,6 @@ public class TalkManager : MonoBehaviour
             StopCoroutine(_talkCoroutine);
             _talkCoroutine = null;
         }
-        Debug.Log("‰ï˜bI—¹");
+        Debug.Log("ä¼šè©±çµ‚äº†");
     }
 }
