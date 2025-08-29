@@ -903,6 +903,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 815619993}
   m_CullTransparentMesh: 1
+--- !u!114 &1175693244 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 679648543530093744, guid: d8675b51f7545344ba3bf772447f1a6d, type: 3}
+  m_PrefabInstance: {fileID: 94590715}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d9744e8dac49b346b0266ca9cd0beec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FadeManager
 --- !u!1 &1249105178
 GameObject:
   m_ObjectHideFlags: 0
@@ -1304,7 +1315,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1761924025}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1175693244}
+        m_TargetAssemblyTypeName: FadeManager, Assembly-CSharp
+        m_MethodName: FadeToScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Introduction
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!114 &1761924025
 MonoBehaviour:
   m_ObjectHideFlags: 0
