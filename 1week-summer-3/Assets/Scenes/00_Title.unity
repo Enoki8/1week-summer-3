@@ -903,17 +903,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 815619993}
   m_CullTransparentMesh: 1
---- !u!114 &1175693244 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 679648543530093744, guid: d8675b51f7545344ba3bf772447f1a6d, type: 3}
-  m_PrefabInstance: {fileID: 94590715}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d9744e8dac49b346b0266ca9cd0beec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FadeManager
 --- !u!1 &1249105178
 GameObject:
   m_ObjectHideFlags: 0
@@ -1062,6 +1051,8 @@ GameObject:
   - component: {fileID: 1438012987}
   - component: {fileID: 1438012986}
   - component: {fileID: 1438012985}
+  - component: {fileID: 1438012990}
+  - component: {fileID: 1438012989}
   m_Layer: 5
   m_Name: TitleScene
   m_TagString: Untagged
@@ -1154,6 +1145,31 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1438012989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438012984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ae5f837aacb0144684e7cc7883e22b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChoiceButton
+  buttonText: {fileID: 1249105180}
+--- !u!114 &1438012990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438012984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 669572ad4d5145c479de3523c33f679d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClickTitleButton
 --- !u!1 &1441154018
 GameObject:
   m_ObjectHideFlags: 0
@@ -1316,10 +1332,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1175693244}
-        m_TargetAssemblyTypeName: FadeManager, Assembly-CSharp
-        m_MethodName: FadeToSceneOnTitle
-        m_Mode: 5
+      - m_Target: {fileID: 1438012990}
+        m_TargetAssemblyTypeName: ClickTitleButton, Assembly-CSharp
+        m_MethodName: onclick
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
