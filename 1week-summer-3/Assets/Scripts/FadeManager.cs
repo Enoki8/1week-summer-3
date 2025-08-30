@@ -15,9 +15,12 @@ public class FadeManager : MonoBehaviour
         anim = this.GetComponent<Animator>();
     }
 
-    public void FadeToScene(string sceneName)
+    public IEnumerator FadeToScene(string sceneName)
     {
-        UnityEngine.Debug.Log("ボタンがクリックされ、FadeToSceneが呼び出されました！"); // ← この行を追加
+        yield return StartCoroutine(FadeAndLoad(sceneName));
+    }
+    public void FadeToSceneOnTitle(string sceneName)
+    {
         StartCoroutine(FadeAndLoad(sceneName));
     }
 

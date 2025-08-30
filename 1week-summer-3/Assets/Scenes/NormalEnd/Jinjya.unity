@@ -262,7 +262,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u3053\u3093\u306B\u3061\u306F"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 25cc01cdc554bf04580130f7b72617a0, type: 2}
   m_sharedMaterial: {fileID: 4894403474024272364, guid: 25cc01cdc554bf04580130f7b72617a0, type: 2}
@@ -534,7 +534,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u306A\u307E\u3048"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 25cc01cdc554bf04580130f7b72617a0, type: 2}
   m_sharedMaterial: {fileID: 4894403474024272364, guid: 25cc01cdc554bf04580130f7b72617a0, type: 2}

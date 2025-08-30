@@ -5,7 +5,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement; // シーン管理のために追加
 
 // シナリオ1行分のデータを格納するクラス
 [System.Serializable]
@@ -27,13 +26,14 @@ public class TalkManager : MonoBehaviour
     [SerializeField] private GameObject nextIconObject;
     [SerializeField] private Image backgroundImage;
     [SerializeField] private Image fadeImage;
+    [SerializeField] private Image characterImage;
 
     [Header("選択肢パーツ")]
-    [SerializeField] private GameObject choiceButtonPrefab; // 選択肢ボタンのプレハブ
-    [SerializeField] private Transform choiceContainer;      // 選択肢ボタンを配置する親オブジェクト
+    [SerializeField] private GameObject choiceButtonPrefab;
+    [SerializeField] private Transform choiceContainer;
 
     [Header("テキスト設定")]
-    [SerializeField] private float waitCanClick = 0.5f;
+    [SerializeField] private float clickDebounceTime = 0.2f; // クリック連打による意図しないスキップを防ぐための待機時間
 
     [Header("演出設定")]
     [SerializeField] private float fadeSpeed = 1.0f;
@@ -44,15 +44,12 @@ public class TalkManager : MonoBehaviour
     private List<ScenarioLine> _scenarioLines;
     private int _currentLineIndex = 0;
 
-    // ラベル名と行インデックスを紐付けるための辞書
     private Dictionary<string, int> _labelDictionary = new Dictionary<string, int>();
-    // プレイヤーが選択肢を選ぶまでシナリオ進行を待機させるための変数
     private bool _isWaitingForChoice = false;
-
     private bool _isTalking = false;
     private Coroutine _talkCoroutine;
-
     private PlayerInput playerInput;
+
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -68,15 +65,18 @@ public class TalkManager : MonoBehaviour
         textBoxObject.SetActive(false);
         nextIconObject.SetActive(false);
         characterNameTextUI.gameObject.SetActive(false);
-        choiceContainer.gameObject.SetActive(false); // 選択肢コンテナを非表示に
+        choiceContainer.gameObject.SetActive(false);
 
+        if (characterImage != null)
+        {
+            characterImage.gameObject.SetActive(false);
+            characterImage.color = new Color(1, 1, 1, 0);
+        }
         if (fadeImage != null)
         {
             //fadeImage.color = new Color(0, 0, 0, 0);
             fadeImage.raycastTarget = false;
         }
-
-        _scenarioLines = new List<ScenarioLine>();
 
         if (scenarioFile != null)
         {
@@ -90,128 +90,96 @@ public class TalkManager : MonoBehaviour
 
         LoadScenario(scenario.text);
         _currentLineIndex = 0;
+
+        if (_talkCoroutine != null)
+        {
+            StopCoroutine(_talkCoroutine);
+        }
         _talkCoroutine = StartCoroutine(TalkCoroutine());
     }
 
     private void LoadScenario(string csvText)
     {
-        _scenarioLines.Clear();
-        _labelDictionary.Clear(); // ラベル辞書をクリア
+        _scenarioLines = new List<ScenarioLine>();
+        _labelDictionary.Clear();
 
         var lines = csvText.Split('\n').Where(line => !string.IsNullOrWhiteSpace(line)).ToList();
 
-        // ヘッダー行をスキップ
         if (lines.Count > 0)
         {
-            lines.RemoveAt(0);
+            lines.RemoveAt(0); // ヘッダー行をスキップ
         }
 
-        // まず、全てのLABELコマンドをスキャンして辞書に登録する
-        for (int i = 0; i < lines.Count; i++)
-        {
-            var values = lines[i].Trim().Split(',');
-            if (values.Length > 1 && !string.IsNullOrEmpty(values[1]))
-            {
-                if (values[1].StartsWith("LABEL:"))
-                {
-                    // "LABEL:" の部分を削除してラベル名だけを取得
-                    string label = values[1].Substring("LABEL:".Length);
-                    _labelDictionary[label] = i;
-                }
-            }
-        }
-
-        // シナリオデータをリストに格納
+        // シナリオデータをリストに格納しつつ、同時にラベルも登録する（ループを1回にまとめる）
         foreach (var line in lines)
         {
             var values = line.Trim().Split(',');
             var data = new ScenarioLine();
 
-            // Command列がCHOICEで始まる場合、特別処理を行う
+            // Commandの解析
             if (values.Length > 1 && values[1].StartsWith("CHOICE:"))
             {
-                // 2列目以降の要素を全てカンマで連結し、１つのコマンドとして再構築する
-                string combinedCommand = string.Join(",", values.Skip(1));
-
-                data.ID = values[0];
-                data.Command = combinedCommand;
-                data.CharacterName = ""; // CHOICE行はキャラ名とセリフは空
-                data.Sentence = "";
+                data.Command = string.Join(",", values.Skip(1));
             }
-            else // それ以外の行は、これまで通りの処理
+            else if (values.Length > 1)
             {
-                if (values.Length < 4) continue;
-                data.ID = values[0];
                 data.Command = values[1];
-                data.CharacterName = values[2];
-                data.Sentence = values[3];
             }
+
+            // ラベルの登録
+            if (!string.IsNullOrEmpty(data.Command) && data.Command.StartsWith("LABEL:"))
+            {
+                string label = data.Command.Substring("LABEL:".Length);
+                _labelDictionary[label] = _scenarioLines.Count; // 現在の行のインデックスを登録
+            }
+
+            // 各列のデータを格納
+            data.ID = values[0];
+            if (values.Length > 2) data.CharacterName = values[2];
+            if (values.Length > 3) data.Sentence = values[3];
 
             _scenarioLines.Add(data);
         }
     }
+
+    // TalkManager.cs 内
 
     private IEnumerator TalkCoroutine()
     {
         _isTalking = true;
         textBoxObject.SetActive(true);
 
-        bool isFirstLine = true;
-
         while (_currentLineIndex < _scenarioLines.Count)
         {
+            // 選択肢が表示されている場合は、解除されるまで待機
             yield return new WaitUntil(() => !_isWaitingForChoice);
 
             ScenarioLine currentLine = _scenarioLines[_currentLineIndex];
 
-            // --- コマンドの実行 ---
-            if (!string.IsNullOrEmpty(currentLine.Command))
+            // これから処理する行がコマンドかどうかを先に判定しておく
+            bool isCommand = !string.IsNullOrEmpty(currentLine.Command);
+
+            // 現在の行を処理（コマンド実行 or テキスト表示）
+            yield return StartCoroutine(ProcessLine(currentLine));
+
+            // 選択肢が表示されている場合、クリック待ちはHandleChoiceCommandに任せる
+            if (_isWaitingForChoice)
             {
-                string[] parts = currentLine.Command.Split(':');
-                string commandName = parts[0];
-                string[] arguments = parts.Length > 1 ? parts[1].Split(',') : new string[0];
-
-                switch (commandName)
-                {
-                    case "CHANGE_BG":
-                        yield return StartCoroutine(ChangeBackgroundFade(arguments[0]));
-                        break;
-                    case "CHOICE":
-                        HandleChoiceCommand(arguments);
-                        break;
-                    case "JUMP":
-                        JumpToLabel(arguments[0]);
-                        _currentLineIndex++; // Jump後は次の行を処理しないようにインクリメントしておく
-                        continue; // 即座に次のループへ
-                    case "LABEL":
-                        // LABELはLoad時に処理済みなので何もしない
-                        break;
-                    case "LOAD_SCENE":
-                        yield return StartCoroutine(LoadSceneFade(arguments[0]));
-                        // シーン遷移後はこのTalkManagerは不要になるので、コルーチンを終了
-                        yield break;
-                    default:
-                        ExecuteSimpleCommand(commandName, arguments.Length > 0 ? arguments[0] : "");
-                        break;
-                }
-
-                _currentLineIndex++;
                 continue;
             }
 
-            // --- テキストと名前の表示 ---
-            if (!string.IsNullOrEmpty(currentLine.CharacterName))
+            // ★処理した行がコマンドでなかった（＝セリフだった）場合のみ、クリックを待つ
+            if (!isCommand)
             {
-                characterNameTextUI.gameObject.SetActive(true);
-                characterNameTextUI.text = currentLine.CharacterName;
-            }
-            else
-            {
-                characterNameTextUI.gameObject.SetActive(false);
-            }
+                // 次の行に進むためにクリックを待つ
+                nextIconObject.SetActive(true);
+                yield return new WaitUntil(() => playerInput.actions["Click"].WasPressedThisFrame());
+                nextIconObject.SetActive(false);
 
-            yield return StartCoroutine(TypeSentenceCoroutine(currentLine.Sentence, isFirstLine));
-            isFirstLine = false;
+                // 連打によるスキップ防止
+                if (clickDebounceTime > 0)
+                    yield return new WaitForSeconds(clickDebounceTime);
+            }
 
             _currentLineIndex++;
         }
@@ -219,28 +187,81 @@ public class TalkManager : MonoBehaviour
         EndTalk();
     }
 
+    // 1行分のシナリオを解釈して実行する
+    private IEnumerator ProcessLine(ScenarioLine line)
+    {
+        if (!string.IsNullOrEmpty(line.Command))
+        {
+            string[] parts = line.Command.Split(':');
+            string commandName = parts[0];
+            string[] arguments = parts.Length > 1 ? parts[1].Split(',') : new string[0];
+
+            switch (commandName)
+            {
+                case "CHANGE_BG":
+                    yield return StartCoroutine(ChangeBackgroundFade(arguments[0]));
+                    break;
+                case "SHOW_PORTRAIT":
+                    yield return StartCoroutine(ShowCharacterFade(arguments[0]));
+                    break;
+                case "HIDE_PORTRAIT":
+                    yield return StartCoroutine(HideCharacterFade());
+                    break;
+                case "CHOICE":
+                    HandleChoiceCommand(arguments);
+                    break; // HandleChoiceCommand内でisWaitingForChoiceがtrueになる
+                case "JUMP":
+                    JumpToLabel(arguments[0]);
+                    break;
+                case "LABEL":
+                    // LABELはLoad時に処理済みなので何もしない
+                    break;
+                case "LOAD_SCENE":
+                    yield return StartCoroutine(FadeManager.Instance.FadeToScene(arguments[0]));
+                    yield break;
+                default:
+                    ExecuteImmediateCommand(commandName, arguments.Length > 0 ? arguments[0] : "");
+                    break;
+            }
+        }
+        else // コマンドがない場合はテキスト表示
+        {
+            UpdateCharacterName(line.CharacterName);
+            yield return StartCoroutine(TypeSentenceCoroutine(line.Sentence));
+        }
+    }
+
+    // キャラクター名表示を更新する
+    private void UpdateCharacterName(string characterName)
+    {
+        if (!string.IsNullOrEmpty(characterName))
+        {
+            characterNameTextUI.gameObject.SetActive(true);
+            characterNameTextUI.text = characterName;
+        }
+        else
+        {
+            characterNameTextUI.gameObject.SetActive(false);
+        }
+    }
+
     // 選択肢コマンドを処理
     private void HandleChoiceCommand(string[] arguments)
     {
-        // 引数の数が奇数の場合は、ペアが成立しないのでエラー
         if (arguments.Length == 0 || arguments.Length % 2 != 0)
         {
-            Debug.LogError($"CHOICEコマンドの引数が不正です。テキストとラベルがペアになっていないか、引数が空です。CSVを確認してください。 引数: {string.Join(",", arguments)}");
-            // 待機状態にならずに次の行へ進むようにする
-            _isWaitingForChoice = false;
+            Debug.LogError($"CHOICEコマンドの引数が不正です。CSVを確認してください。 引数: {string.Join(",", arguments)}");
             return;
         }
 
         _isWaitingForChoice = true;
         choiceContainer.gameObject.SetActive(true);
 
-        // 古い選択肢が残っていれば削除
         foreach (Transform child in choiceContainer)
         {
             Destroy(child.gameObject);
         }
 
-        // CSVから読み取った情報で選択肢を生成
         for (int i = 0; i < arguments.Length; i += 2)
         {
             string choiceText = arguments[i];
@@ -255,22 +276,25 @@ public class TalkManager : MonoBehaviour
     // 選択肢ボタンがクリックされたときに呼び出される
     public void OnChoiceSelected(string targetLabel)
     {
-        // 選択肢を全て削除
         foreach (Transform child in choiceContainer)
         {
             Destroy(child.gameObject);
         }
 
         choiceContainer.gameObject.SetActive(false);
-        textBoxObject.SetActive(true); // 会話ウィンドウを再表示
 
-        // シナリオを指定のラベルにジャンプさせる
         JumpToLabel(targetLabel);
 
-        _isWaitingForChoice = false; // 待機状態を解除
+        // 待機状態を解除する前に、連打防止のウェイトを入れる
+        StartCoroutine(ResumeTalkAfterChoice());
     }
 
-
+    private IEnumerator ResumeTalkAfterChoice()
+    {
+        if (clickDebounceTime > 0)
+            yield return new WaitForSeconds(clickDebounceTime);
+        _isWaitingForChoice = false;
+    }
 
     private void JumpToLabel(string label)
     {
@@ -284,48 +308,76 @@ public class TalkManager : MonoBehaviour
         }
     }
 
-    private IEnumerator TypeSentenceCoroutine(string sentence, bool skipWait = false)
+    // このコルーチンはテキストをタイプアップ表示することだけに専念する
+    private IEnumerator TypeSentenceCoroutine(string sentence)
     {
         textUI.text = sentence;
-        nextIconObject.SetActive(false);
-        if (!skipWait)
-            yield return new WaitForSeconds(waitCanClick);
-
-        nextIconObject.SetActive(true);
-        yield return new WaitUntil(() => playerInput.actions["Click"].WasPressedThisFrame());
-        nextIconObject.SetActive(false);
+        // 今後、一文字ずつ表示する演出を追加する場合はここに記述
+        yield return null; // 1フレーム待機（テキストがUIに反映されるのを保証）
     }
 
-    // 待機が不要なコマンドを実行する
-    private void ExecuteSimpleCommand(string command, string argument)
+    // 待機が不要なコマンドを即時実行する
+    private void ExecuteImmediateCommand(string command, string argument)
     {
-        Debug.Log($"コマンド実行: {command}, 引数: {argument}");
-
-        // AudioManagerがシーンに存在するかチェック
         if (AudioManager.Instance == null)
         {
             Debug.LogError("AudioManagerが見つかりません！");
-            return;
         }
 
         switch (command)
         {
-            case "SHOW_PORTRAIT":
-                // TODO: 立ち絵表示の処理
-                break;
-
-            case "PLAY_BGM":
-                AudioManager.Instance.PlayBGM(argument);
-                break;
-
-            case "STOP_BGM":
-                AudioManager.Instance.StopBGM();
-                break;
-
-            case "PLAY_SE":
-                AudioManager.Instance.PlaySE(argument);
+            case "PLAY_BGM": AudioManager.Instance.PlayBGM(argument); break;
+            case "STOP_BGM": AudioManager.Instance.StopBGM(); break;
+            case "PLAY_SE": AudioManager.Instance.PlaySE(argument); break;
+            default:
+                Debug.LogWarning($"未定義のコマンドが実行されました: {command}");
                 break;
         }
+    }
+
+    private IEnumerator ShowCharacterFade(string characterSpriteName)
+    {
+        if (characterImage == null) yield break;
+
+        // 画像を読み込み
+        Sprite characterSprite = Resources.Load<Sprite>($"Characters/{characterSpriteName}");
+        if (characterSprite == null)
+        {
+            Debug.LogError($"キャラクター画像の読み込みに失敗しました: Resources/Characters/{characterSpriteName}");
+            yield break;
+        }
+
+        characterImage.sprite = characterSprite;
+        characterImage.gameObject.SetActive(true);
+
+        // フェードイン処理
+        float timer = 0f;
+        while (timer < 0.5f)
+        {
+            timer += Time.deltaTime * fadeSpeed;
+            characterImage.color = new Color(1, 1, 1, Mathf.Lerp(0, 1, timer * 2));
+            yield return null;
+        }
+        characterImage.color = new Color(1, 1, 1, 1);
+    }
+
+    /// <summary>
+    /// キャラクターをフェードアウトで非表示にするコルーチン
+    /// </summary>
+    private IEnumerator HideCharacterFade()
+    {
+        if (characterImage == null) yield break;
+
+        // フェードアウト処理
+        float timer = 0f;
+        while (timer < 1.0f)
+        {
+            timer += Time.deltaTime * fadeSpeed;
+            characterImage.color = new Color(1, 1, 1, Mathf.Lerp(1, 0, timer));
+            yield return null;
+        }
+        characterImage.color = new Color(1, 1, 1, 0);
+        characterImage.gameObject.SetActive(false);
     }
 
     // フェード付きで背景を変更するコルーチン
@@ -350,26 +402,6 @@ public class TalkManager : MonoBehaviour
 
         // フェードイン
         yield return StartCoroutine(Fade(0.0f));
-    }
-
-    /// <summary>
-    /// フェード付きで指定されたシーンをロードするコルーチン
-    /// </summary>
-    /// <param name="sceneName">ロードするシーン名</param>
-    private IEnumerator LoadSceneFade(string sceneName)
-    {
-        // まず画面をフェードアウトさせる
-        yield return StartCoroutine(Fade(1.0f));
-
-        // 非同期でシーンをロードする
-        //AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
-        FadeManager.Instance.FadeToScene(sceneName);
-
-        //// ロードが完了するまで待機する
-        //while (!asyncLoad.isDone)
-        //{
-        //    yield return null;
-        //}
     }
 
     // フェード処理の本体
@@ -400,7 +432,6 @@ public class TalkManager : MonoBehaviour
     private void EndTalk()
     {
         _isTalking = false;
-        textBoxObject.SetActive(false);
         textUI.text = "";
         characterNameTextUI.text = "";
 
@@ -409,6 +440,8 @@ public class TalkManager : MonoBehaviour
             StopCoroutine(_talkCoroutine);
             _talkCoroutine = null;
         }
+        StartCoroutine(FadeManager.Instance.FadeToScene("00_Title"));
         Debug.Log("会話終了");
+
     }
 }

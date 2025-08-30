@@ -32,7 +32,7 @@ public class TimeLimitManager : MonoBehaviour
         ShowTimeRemain();
         if (nowSwowingTimeNumber == 0)
         {
-            GameManager.Instance.timeIsRemain = false;
+            GameManager.Instance.TimeIsRemain = false;
         }
     }
 

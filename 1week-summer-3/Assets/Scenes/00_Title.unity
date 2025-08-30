@@ -1318,7 +1318,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1175693244}
         m_TargetAssemblyTypeName: FadeManager, Assembly-CSharp
-        m_MethodName: FadeToScene
+        m_MethodName: FadeToSceneOnTitle
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

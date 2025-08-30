@@ -11,7 +11,7 @@ ID,Command,CharacterName,Sentence,
 7,,,ちょ、待て待て、息子のラストコールなんですけど！？,
 8,CHOICE:電話をもう一度かける,LBL_RECALL1,諦める,LBL_GIVEUP
 9,LABEL:LBL_RECALL1,,,
-10,,,"慌ててかけなおす。
+10,,,慌ててかけなおす。
 ",
 11,,,プルルル……ガチャッ。,
 12,,母,今テレビCM明けだから！,
@@ -20,7 +20,7 @@ ID,Command,CharacterName,Sentence,
 15,,,母さんの優先順位は明確だった,
 16,CHOICE:電話をもう一度かける,LBL_RECALL2,諦める,LBL_GIVEUP
 17,LABEL:LBL_RECALL2,,,
-18,,,"再び発信。プルルル……ガチャッ。
+18,,,再び発信。プルルル……ガチャッ。
 ",
 19,,,プルルル……ガチャッ。,
 20,,母,宅配便来た！待って,
@@ -29,7 +29,7 @@ ID,Command,CharacterName,Sentence,
 22,,,……母さん、俺の命が今天国に届けられようとしているのですよ？,
 23,CHOICE:電話をもう一度かける,LBL_RECALL3,諦める,LBL_GIVEUP
 24,LABEL:LBL_RECALL3,,,
-25,,,"諦めてたまるものか！！
+25,,,諦めてたまるものか！！
 ",
 26,,,プルルル……ガチャッ。,
 27,,母,味噌汁が勝手に！,
