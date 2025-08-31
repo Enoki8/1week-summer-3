@@ -352,6 +352,17 @@ public class TalkManager : MonoBehaviour
                     Debug.LogError("TimeLimitManagerのインスタンスが見つかりません！");
                 }
                 break;
+            case "FORCE_TIME_UP":
+                if (TimeLimitManager.Instance != null)
+                {
+                    TimeLimitManager.Instance.ForceTimeUp();
+                    Debug.Log("タイマーを0にしました。");
+                }
+                else
+                {
+                    Debug.LogError("TimeLimitManagerのインスタンスが見つかりません！");
+                }
+                break;
         }
     }
 

@@ -41,6 +41,6 @@ ID,Command,CharacterName,Sentence,,,,,
 ,SHOW_PORTRAIT:GOD1,,,,,,,,,
 22,,,アホかお主、何をしておるのじゃ、寿命がもうないんじゃぞ,,,,,
 ,HIDE_PORTRAIT,,,,,,,,,
-,JUMP:SELECT
+11,CHOICE:リビングに向かう,LBL_LIVING,窓から外に出る,LBL_WINDOW
 ,LABEL:Secret
 33,LOAD_SCENE:TrueEnd

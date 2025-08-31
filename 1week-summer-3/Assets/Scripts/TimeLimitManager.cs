@@ -56,5 +56,10 @@ public class TimeLimitManager : MonoBehaviour
         nowSwowingTimeNumber = 60;
         isStart = false;
         isStop = false;
+        GameManager.Instance.TimeIsRemain = true;
+    }
+    public void ForceTimeUp()
+    {
+        nowSwowingTimeNumber = 0;
     }
 }
