@@ -5,7 +5,6 @@ public class TimeLimitManager : MonoBehaviour
 {
     public static TimeLimitManager Instance;
     public bool isStart = false;
-    public bool isStop = false;
     [SerializeField] private float timeLimit = 60f;
 
     //[SerializeField] private TextMeshProUGUI rimitTime;
@@ -28,7 +27,6 @@ public class TimeLimitManager : MonoBehaviour
     void Update()
     {
         if (!isStart) return;
-        if (isStop) return;
         if (nowSwowingTimeNumber == 0) return;
         DecreaseTime();
         ShowTimeRemain();

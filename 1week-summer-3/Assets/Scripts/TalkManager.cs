@@ -216,15 +216,6 @@ public class TalkManager : MonoBehaviour
                 case "LABEL":
                     // LABELはLoad時に処理済みなので何もしない
                     break;
-                case "JUMP_IF_LAST_SECOND":
-                    // TimeLimitManagerの残り時間が1秒の時だけジャンプする
-                    if (TimeLimitManager.Instance != null && TimeLimitManager.Instance.nowSwowingTimeNumber == 1)
-                    {
-                        TimeLimitManager.Instance.isStop = true;
-                        JumpToLabel(arguments[0]);
-                    }
-                    // 条件に合わなければ、何もしないで次の行に進む
-                    break;
                 case "LOAD_SCENE":
                     yield return StartCoroutine(FadeManager.Instance.FadeToScene(arguments[0]));
                     yield break;
