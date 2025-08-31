@@ -58,7 +58,7 @@ ID,Command,CharacterName,Sentence,
 56,,母,あんたがいつもやっている事をやってんのよ,
 57,,,ガチャッ。,
 58,,,電話が切れた。何度かけなおしても母が電話に出ることはなかった。,
-59,JUMP:END,,,
+52,LOAD_SCENE:GameOver,,,
 60,,,,
 
 ,LABEL:END,,,
