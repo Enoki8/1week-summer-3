@@ -357,6 +357,7 @@ public class TalkManager : MonoBehaviour
         }
 
         characterImage.sprite = characterSprite;
+        characterImage.SetNativeSize();
         characterImage.gameObject.SetActive(true);
 
         // フェードイン処理
