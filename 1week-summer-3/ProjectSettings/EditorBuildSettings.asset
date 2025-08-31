@@ -30,6 +30,9 @@ EditorBuildSettings:
     path: Assets/Scenes/NormalEnd/Manbiki.unity
     guid: 34c17585afba05f4490fb46165d27538
   - enabled: 1
+    path: Assets/Scenes/TrueEnd.unity
+    guid: 8cf0bc343f41d624fac19be4ca9f4d2c
+  - enabled: 1
     path: Assets/Scenes/GameOver.unity
     guid: 71e94f524291dfc4eb9bd9e50994f853
   m_configObjects:

@@ -3,16 +3,27 @@ ID,Command,CharacterName,Sentence,,,,,
 2,,,いや、天井自体は普通なのに、その光の中に誰かがいた。,,,,,
 3,,神様,お主……ようやく目覚めたかのう,,,,,
 4,,俺,え、誰！？,,,,,
+<<<<<<< Updated upstream:1week-summer-3/Assets/Resources/神様の説明.csv
 ,"SHOW_PORTRAIT:GOD1,,",,,,,,,
+=======
+,SHOW_PORTRAIT:GOD1,,,,,,,,,
+>>>>>>> Stashed changes:1week-summer-3/Assets/Resources/神様の説明 - シート1.csv
 5,,神様,神様じゃ。お主にどうしても伝えねばならぬことがあっての,,,,,
 6,,,目の前の神様（？）に目を丸くしていると、そいつは続けた。,,,,,
 7,,神様,お主の寿命は、残り1分じゃ,,,,,
 8,,俺,は？なんて？,,,,,
 9,,神様,右上のタイマーを見よ。今儂らが話している間にも、確実に減っておる。その数字がお主の寿命じゃ。後悔せぬよう過ごすがよい,,,,,
+<<<<<<< Updated upstream:1week-summer-3/Assets/Resources/神様の説明.csv
 ,"HIDE_PORTRAIT,,",,,,,,,
 ,LABEL:SELECT,,,,,,,
 10,,,理解が追い付かないまま、俺は,,,,,
 11,CHOICE:リビングに向かう,LBL_LIVING,窓から外に出る,LBL_WINDOW,ベッドに戻る,LBL_BED,,
+=======
+,HIDE_PORTRAIT,,,,,,,,,
+12,LABEL:SELECT
+10,,,理解が追い付かないまま、俺は,,,,,
+11,CHOICE:リビングに向かう,LBL_LIVING,窓から外に出る,LBL_WINDOW,ベッドに戻る,LBL_BED
+>>>>>>> Stashed changes:1week-summer-3/Assets/Resources/神様の説明 - シート1.csv
 12,LABEL:LBL_LIVING,,,,,,,
 ,CHANGE_BG:リビング,,,,,,,
 13,,,とりあえずリビングに向かう。,,,,,
@@ -24,9 +35,12 @@ ID,Command,CharacterName,Sentence,,,,,
 19,LOAD_SCENE:GACHA,,,,,,,
 20,LABEL:LBL_WINDOW,,,,,,,
 21,,,"ドアから外に出る時間もない！俺は窓から家を飛び出した。
+<<<<<<< Updated upstream:1week-summer-3/Assets/Resources/神様の説明.csv
 
 ",,,,,
 ,CHANGE_BG:住宅,,,,,,,
+=======
+>>>>>>> Stashed changes:1week-summer-3/Assets/Resources/神様の説明 - シート1.csv
 22,,,庭にあったサンダルを履く。さて残り僅かな寿命で何をしようか,,,,,
 23,CHOICE:恋愛をしたい！,LBL_LOVE,いっそのこと万引きだ！,LBL_MANBIKI,ホールケーキを食べたい！,LBL_CAKE,神様を調べるぜ！,LBL_GOD
 24,LABEL:LBL_LOVE,,,,,,,
@@ -37,9 +51,20 @@ ID,Command,CharacterName,Sentence,,,,,
 29,LOAD_SCENE:CAKE,,,,,,,
 30,LABEL:LBL_GOD,,,,,,,
 31,LOAD_SCENE:GOD,,,,,,,
+<<<<<<< Updated upstream:1week-summer-3/Assets/Resources/神様の説明.csv
 ,",SHOW_PORTRAIT:GOD1",,,,,,,
 ,,神様,アホかお主、何をしておるのじゃ、寿命がもうないんじゃぞ,,,,,
 ,"HIDE_PORTRAIT,,",,,,,,,
 ,JUMP:SELECT,,,,,,,
 ,LABEL:Secret,,,,,,,
 ,LOAD_SCENE:TrueEnd,,,,,,,
+=======
+32,LABEL:LBL_BED,,,,,,,
+99,JUMP_IF_LAST_SECOND:Secret
+,SHOW_PORTRAIT:GOD1,,,,,,,,,
+22,,,アホかお主、何をしておるのじゃ、寿命がもうないんじゃぞ,,,,,
+,HIDE_PORTRAIT,,,,,,,,,
+,JUMP:SELECT
+,LABEL:Secret
+33,LOAD_SCENE:TrueEnd
+>>>>>>> Stashed changes:1week-summer-3/Assets/Resources/神様の説明 - シート1.csv
