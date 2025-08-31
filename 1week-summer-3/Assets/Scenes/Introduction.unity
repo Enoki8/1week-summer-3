@@ -1722,7 +1722,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 5410597408939793556, guid: 17c2c034f864b8f4984dfb0accdd2638, type: 3}
+  m_Sprite: {fileID: 4477882856529817879, guid: 22160c54f85496e4684edbbd64651b8e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2070,7 +2070,7 @@ PrefabInstance:
     - target: {fileID: 6069513018905978, guid: 226a97a7de53bf640b8f2190805f2eff, type: 3}
       propertyPath: scenarioFile
       value: 
-      objectReference: {fileID: 4900000, guid: 3f2ec23e3fa2abd47bc4d21a4ad1bbee, type: 3}
+      objectReference: {fileID: 4900000, guid: f790be5c12b2bda44bddc51d007806c3, type: 3}
     - target: {fileID: 6069513018905978, guid: 226a97a7de53bf640b8f2190805f2eff, type: 3}
       propertyPath: textBoxObject
       value: 
