@@ -341,6 +341,17 @@ public class TalkManager : MonoBehaviour
             default:
                 Debug.LogWarning($"未定義のコマンドが実行されました: {command}");
                 break;
+            case "START_TIMER":
+                if (TimeLimitManager.Instance != null)
+                {
+                    TimeLimitManager.Instance.isStart = true;
+                    Debug.Log("タイマーを開始しました。");
+                }
+                else
+                {
+                    Debug.LogError("TimeLimitManagerのインスタンスが見つかりません！");
+                }
+                break;
         }
     }
 
