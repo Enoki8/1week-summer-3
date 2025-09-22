@@ -398,7 +398,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u7530\u820E\u9053"
+  m_text: "\u81EA\u5BA4"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 25cc01cdc554bf04580130f7b72617a0, type: 2}
   m_sharedMaterial: {fileID: 4894403474024272364, guid: 25cc01cdc554bf04580130f7b72617a0, type: 2}
@@ -1862,6 +1862,10 @@ PrefabInstance:
       propertyPath: fadeImage
       value: 
       objectReference: {fileID: 81007640}
+    - target: {fileID: 6069513018905978, guid: 226a97a7de53bf640b8f2190805f2eff, type: 3}
+      propertyPath: customTextUI
+      value: 
+      objectReference: {fileID: 278718325}
     - target: {fileID: 6069513018905978, guid: 226a97a7de53bf640b8f2190805f2eff, type: 3}
       propertyPath: scenarioFile
       value: 

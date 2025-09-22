@@ -5,6 +5,7 @@ ID,Command,CharacterName,Sentence
 4,,,俺は口を開く。
 5,,俺,お前、どういう神様なんだ？
 ,CHANGE_BG:神社,,
+,SET_TEXT:神社,,
 ,SHOW_PORTRAIT:GOD1,,,,
 6,,,すると神様は笑いながら言った。
 7,,神様,儂の事が書いてある神社がそこにあるから見ていくかの？フォッフォッ

@@ -34,16 +34,34 @@ public class FadeManager : MonoBehaviour
 
     private IEnumerator Fade(float targetAlpha)
     {
-        anim.SetTrigger(targetAlpha == 1 ? "FadeIn" : "FadeOut");
-        string stateName = targetAlpha == 1 ? "FadeIn" : "FadeOut";
+        bool isFadeIn = targetAlpha == 1;
+        string triggerName = isFadeIn ? "FadeIn" : "FadeOut";
+        string stateName = isFadeIn ? "FadeIn" : "FadeOut";
+
+        Debug.Log($"Fade coroutine started. Triggering: {triggerName}");
+
+        // アニメーションをトリガー
+        anim.SetTrigger(triggerName);
+
+        // アニメーターが再生状態になるまで少し待つ
+        yield return null;
+
+        // 現在のステートが目的のステートになるまで待つ
         while (!anim.GetCurrentAnimatorStateInfo(0).IsName(stateName))
         {
+            // 目的のステートに遷移するまで待機
             yield return null;
         }
+
+        Debug.Log($"State changed to: {stateName}. Waiting for animation to finish.");
+
+        // アニメーションが終了するまで待つ ( normalizedTimeが1以上になるまで )
         while (anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
         {
             yield return null;
         }
+
+        Debug.Log($"Animation {stateName} finished.");
     }
 
 }

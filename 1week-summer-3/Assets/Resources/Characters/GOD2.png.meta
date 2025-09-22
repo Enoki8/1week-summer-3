@@ -3,8 +3,8 @@ guid: 166aeddf7a25eb1499d43949e9fa8ea0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5204438052727170351
-    second: god2_0
+      213: 6886866699830241536
+    second: GOD2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: god2_0
+      name: GOD2_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1024
-        height: 1024
+        x: 161
+        y: 158
+        width: 614
+        height: 767
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1dadba35a2f16c7b0800000000000000
-      internalID: -5204438052727170351
+      spriteID: 00929da76c0139f50800000000000000
+      internalID: 6886866699830241536
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      god2_0: -5204438052727170351
+      GOD2_0: 6886866699830241536
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

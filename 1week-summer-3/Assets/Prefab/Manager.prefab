@@ -58,7 +58,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: efd6ea19f73a33345b26ec8f1e6b6c15, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
@@ -756,6 +756,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TimeLimitManager
   isStart: 0
+  isStop: 0
   timeLimit: 60
   nowSwowingTimeNumber: 60
 --- !u!1 &6376720564886505441

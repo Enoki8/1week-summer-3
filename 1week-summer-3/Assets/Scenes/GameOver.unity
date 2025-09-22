@@ -1853,6 +1853,7 @@ MonoBehaviour:
   backgroundImage: {fileID: 1614681919}
   fadeImage: {fileID: 81007640}
   characterImage: {fileID: 0}
+  customTextUI: {fileID: 278718325}
   choiceButtonPrefab: {fileID: 4262367919209939692, guid: 1c1f7c028800df34cac62860582add60, type: 3}
   choiceContainer: {fileID: 1453249990}
   clickDebounceTime: 0.2

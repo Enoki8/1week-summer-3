@@ -27,6 +27,7 @@ public class TalkManager : MonoBehaviour
     [SerializeField] private Image backgroundImage;
     [SerializeField] private Image fadeImage;
     [SerializeField] private Image characterImage;
+    [SerializeField] private TextMeshProUGUI customTextUI; // ★変更点1: テキストを変更したいUIをインスペクターから設定できるように変数を追加
 
     [Header("選択肢パーツ")]
     [SerializeField] private GameObject choiceButtonPrefab;
@@ -226,7 +227,15 @@ public class TalkManager : MonoBehaviour
                     // 条件に合わなければ、何もしないで次の行に進む
                     break;
                 case "LOAD_SCENE":
-                    yield return StartCoroutine(FadeManager.Instance.FadeToScene(arguments[0]));
+                    if (FadeManager.Instance == null)
+                    {
+                        Debug.LogError("LOAD_SCENE実行時、FadeManager.Instance が null です！");
+                    }
+                    else
+                    {
+                        Debug.Log("LOAD_SCENE実行時、FadeManager.Instance は存在します。FadeToSceneを開始します。");
+                        yield return StartCoroutine(FadeManager.Instance.FadeToScene(arguments[0]));
+                    }
                     yield break;
                 default:
                     ExecuteImmediateCommand(commandName, arguments.Length > 0 ? arguments[0] : "");
@@ -298,6 +307,8 @@ public class TalkManager : MonoBehaviour
         StartCoroutine(ResumeTalkAfterChoice());
     }
 
+
+
     private IEnumerator ResumeTalkAfterChoice()
     {
         if (clickDebounceTime > 0)
@@ -338,6 +349,18 @@ public class TalkManager : MonoBehaviour
             case "PLAY_BGM": AudioManager.Instance.PlayBGM(argument); break;
             case "STOP_BGM": AudioManager.Instance.StopBGM(); break;
             case "PLAY_SE": AudioManager.Instance.PlaySE(argument); break;
+            // ★変更点2: SET_TEXTコマンドの処理を追加
+            case "SET_TEXT":
+                if (customTextUI != null)
+                {
+                    // \n を改行コードに変換する処理を追加
+                    customTextUI.text = argument.Replace("\\n", "\n");
+                }
+                else
+                {
+                    Debug.LogError("SET_TEXTの対象となるUI(customTextUI)がインスペクターで設定されていません。");
+                }
+                break;
             default:
                 Debug.LogWarning($"未定義のコマンドが実行されました: {command}");
                 break;
@@ -439,26 +462,8 @@ public class TalkManager : MonoBehaviour
     // フェード処理の本体
     private IEnumerator Fade(float targetAlpha)
     {
-        if (fadeImage == null)
-        {
-            Debug.LogWarning("フェード用のImageが設定されていません。");
-            yield break;
-        }
+        yield return null; // 1フレーム待つ
 
-        Color currentColor = fadeImage.color;
-        float startAlpha = currentColor.a;
-        float timer = 0.0f;
-
-        while (timer < 1.0f)
-        {
-            timer += Time.deltaTime * fadeSpeed;
-            float newAlpha = Mathf.Lerp(startAlpha, targetAlpha, timer);
-            fadeImage.color = new Color(currentColor.r, currentColor.g, currentColor.b, newAlpha);
-            yield return null; // 1フレーム待つ
-        }
-
-        // 確実に目標のアルファ値にする
-        fadeImage.color = new Color(currentColor.r, currentColor.g, currentColor.b, targetAlpha);
     }
 
     private void EndTalk()
