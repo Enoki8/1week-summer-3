@@ -492,28 +492,28 @@ public class TalkManager : MonoBehaviour
         switch (name)
         {
             case "Denwa":
-                GameDataHandler.Instance.SetData(0);
-                break;
-            case "Gacha":
                 GameDataHandler.Instance.SetData(1);
                 break;
-            case "HoleCake":
+            case "Gacha":
                 GameDataHandler.Instance.SetData(2);
                 break;
-            case "Jinjya":
+            case "HoleCake":
                 GameDataHandler.Instance.SetData(3);
                 break;
-            case "Kokuhaku":
+            case "Jinjya":
                 GameDataHandler.Instance.SetData(4);
                 break;
-            case "Manbiki":
+            case "Kokuhaku":
                 GameDataHandler.Instance.SetData(5);
                 break;
-            case "GameOver":
+            case "Manbiki":
                 GameDataHandler.Instance.SetData(6);
                 break;
-            case "TrueEnd":
+            case "GameOver":
                 GameDataHandler.Instance.SetData(7);
+                break;
+            case "TrueEnd":
+                GameDataHandler.Instance.SetData(0);
                 break;
         }
 
