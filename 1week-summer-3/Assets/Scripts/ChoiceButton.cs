@@ -10,7 +10,7 @@ public class ChoiceButton : MonoBehaviour
     private string _targetLabel;
     private Action<string> _onClickAction;
 
-    private void Awake()
+    private void Start()
     {
         _button = GetComponent<Button>();
         _button.onClick.AddListener(OnClick);

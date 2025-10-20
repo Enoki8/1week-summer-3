@@ -46,7 +46,7 @@ public class TimeLimitManager : MonoBehaviour
     private void ShowTimeRemain()
     {
         if (nowSwowingTimeNumber == (int)timeLimit) return;
-        Debug.Log(timeLimit);
+        //Debug.Log(timeLimit);
 
         nowSwowingTimeNumber = (int)timeLimit;
     }

@@ -7,10 +7,4 @@ public class TimeSetForGameOver : MonoBehaviour
     {
         TimeLimitManager.Instance.nowSwowingTimeNumber = 0;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

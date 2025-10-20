@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 // シナリオ1行分のデータを格納するクラス
@@ -59,6 +60,10 @@ public class TalkManager : MonoBehaviour
     void OnEnable()
     {
         playerInput.actions.Enable();
+    }
+    private void OnDisable()
+    {
+        playerInput.actions.Disable();
     }
 
     void Start()
@@ -477,8 +482,40 @@ public class TalkManager : MonoBehaviour
             StopCoroutine(_talkCoroutine);
             _talkCoroutine = null;
         }
+        SetEndList(SceneManager.GetActiveScene().name);
         StartCoroutine(FadeManager.Instance.FadeToScene("00_Title"));
         Debug.Log("会話終了");
+    }
+
+    private void SetEndList(string name)
+    {
+        switch (name)
+        {
+            case "Denwa":
+                GameDataHandler.Instance.SetData(0);
+                break;
+            case "Gacha":
+                GameDataHandler.Instance.SetData(1);
+                break;
+            case "HoleCake":
+                GameDataHandler.Instance.SetData(2);
+                break;
+            case "Jinjya":
+                GameDataHandler.Instance.SetData(3);
+                break;
+            case "Kokuhaku":
+                GameDataHandler.Instance.SetData(4);
+                break;
+            case "Manbiki":
+                GameDataHandler.Instance.SetData(5);
+                break;
+            case "GameOver":
+                GameDataHandler.Instance.SetData(6);
+                break;
+            case "TrueEnd":
+                GameDataHandler.Instance.SetData(7);
+                break;
+        }
 
     }
 }
