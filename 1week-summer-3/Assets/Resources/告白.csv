@@ -1,4 +1,5 @@
 ID,Command,CharacterName,Sentence
+,PLAY_BGM:monstruo,
 1,,,俺は悟った。
 2,,,人は結局「愛」にすがるのだ。
 3,,,そうだ、付き合わなきゃ。
@@ -37,3 +38,4 @@ ID,Command,CharacterName,Sentence
 36,,セーラー服の子,絶っ対に教えない！！
 37,,,再び平手打ちをくらい、視界が真っ暗に染まった。
 38,,,ーーNORMAL END
+,STOP_BGM,

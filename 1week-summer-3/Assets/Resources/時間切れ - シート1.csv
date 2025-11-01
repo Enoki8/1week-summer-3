@@ -1,4 +1,5 @@
-ID,Command,CharacterName,Sentence
+ID,Command,CharacterName,Sentence,
+,PLAY_BGM:Nothing_2,
 1,,,タイマーがゼロを告げた瞬間だった。
 2,,神様,お主、これでよかったのかの？
 3,,,良いわけあるか！！
@@ -9,3 +10,4 @@ ID,Command,CharacterName,Sentence
 8,,,いや、そもそも１分ってみじか―
 9,,,だが言葉は出ず、思いは届かず、目の前はゆっくりと真っ暗に染まっていった。
 10,,,ーーBAD END
+,STOP_BGM,

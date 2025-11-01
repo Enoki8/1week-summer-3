@@ -483,8 +483,16 @@ public class TalkManager : MonoBehaviour
             _talkCoroutine = null;
         }
         SetEndList(SceneManager.GetActiveScene().name);
-        StartCoroutine(FadeManager.Instance.FadeToScene("00_Title"));
-        Debug.Log("会話終了");
+
+        if (SceneManager.GetActiveScene().name == "TrueEnd")
+        {
+            StartCoroutine(FadeManager.Instance.FadeToScene("Staff"));
+        }
+        else
+        {
+            StartCoroutine(FadeManager.Instance.FadeToScene("00_Title"));
+            Debug.Log("会話終了");
+        }
     }
 
     private void SetEndList(string name)

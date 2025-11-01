@@ -466,6 +466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1fc5940d1b91a9469a71fb35b967f48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameDataHandler
+  OpenData: 0000000000000000
 --- !u!1 &4122537808386594952
 GameObject:
   m_ObjectHideFlags: 0
@@ -574,7 +575,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 1
   Mute: 0

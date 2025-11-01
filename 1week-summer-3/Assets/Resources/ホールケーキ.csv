@@ -1,4 +1,5 @@
 ID,Command,CharacterName,Sentence
+.PLAY_BGM:ハイテンションッ!
 1,,,考えるより先に、胃袋が答えた。
 2,,俺,最後はケーキ食って死にたいッ！
 3,,,だがショーウィンドウに映る自分を見て、一瞬固まる。
@@ -48,3 +49,4 @@ ID,Command,CharacterName,Sentence
 48,,俺,え、ちょ……せめて後一口食わせろおおお！
 49,,,焦る気持ちも、口の中に広がる甘ったるさも、霞に溶けていった。
 50,,,ーーNORMAL END
+,STOP_BGM,

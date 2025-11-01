@@ -1,4 +1,5 @@
 ID,Command,CharacterName,Sentence
+,PLAY_BGM:むくわれないっ！
 1,,,俺の寿命、あとわずか――。
 2,,,もうどうせ死ぬ。ならば、最後にやらかしてやろう。
 3,,,やってはいけないことほど、やりたくなるのが人間の性だろう？
@@ -43,3 +44,4 @@ ID,Command,CharacterName,Sentence
 36,,,そこで気づいた。
 37,,,――律儀に信号で止まる必要、なかったじゃん。
 38,,,ーーNORMAL END
+,STOP_BGM,

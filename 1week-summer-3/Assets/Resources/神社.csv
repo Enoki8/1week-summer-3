@@ -1,4 +1,5 @@
 ID,Command,CharacterName,Sentence
+,PLAY_BGM:ラテンダンス,
 1,,,この寿命を押し付けてきた神様の事を知ろうと思った。
 2,,,もしかしたら、この寿命をどうにかできるかもしれない
 3,,,——その望みに、どうしても縋りたかったのだ。
@@ -69,3 +70,4 @@ ID,Command,CharacterName,Sentence
 58,,神様,良いことを教えてやろう
 59,,神様,儂は性格が悪い、フォッフォッ
 ,HIDE_PORTRAIT,,,,
+,STOP_BGM,
